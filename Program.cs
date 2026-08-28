@@ -5,6 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+builder.Services.AddRouting(options => { 
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
