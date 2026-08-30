@@ -6,7 +6,7 @@ namespace Lagom.Domain.Models;
 public class WorkTask
 {
     [Description("Identificador único da tarefa.")]
-    public double Id { get; set; }
+    public int Id { get; set; }
 
     [Description("Título da tarefa.")]
     public required string Title { get; set; }

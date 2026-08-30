@@ -1,4 +1,5 @@
-﻿using Lagom.Domain.Models;
+﻿using Lagom.Domain.DTOs;
+using Lagom.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
@@ -8,7 +9,8 @@ namespace Lagom.Controllers;
 [ApiController]
 public class TasksController : ControllerBase
 {
-    private readonly List<WorkTask> tasks =
+    private int nextId = 4;
+    private static readonly List<WorkTask> Tasks =
         [
             new() { Id = 1, Title = "Task 1", DurationInMinutes = 60, IsCompleted = false },
             new() { Id = 2, Title = "Task 2", Date = new DateOnly(2026, 8, 20), DurationInMinutes = 120, IsCompleted = true },
@@ -26,26 +28,46 @@ public class TasksController : ControllerBase
     {
         if(startDate.HasValue && endDate.HasValue)
         {
-            return Ok(tasks.Where(t => t.Date >= startDate.Value && t.Date <= endDate.Value));
+            return Ok(Tasks.Where(t => t.Date >= startDate.Value && t.Date <= endDate.Value));
         }
 
-        return Ok(tasks);
+        return Ok(Tasks);
     }
 
-    [HttpGet("/{id}")]
+    [HttpGet("{id}")]
     [EndpointSummary("Obtém uma tarefa específica pelo ID")]
     [EndpointDescription("Retorna uma tarefa específica com base no ID fornecido.")]
     [ProducesResponseType<WorkTask>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetTask([FromRoute, Description("Identificador único da tarefa.")] double id)
     {
-        var task = tasks.FirstOrDefault(t => t.Id == id);
+        var task = Tasks.FirstOrDefault(t => t.Id == id);
         if (task == null)
         {
             return NotFound();
         }
 
         return Ok(task);
+    }
+
+    [HttpPost]
+    [EndpointSummary("Cria uma nova tarefa")]
+    [EndpointDescription("Cria uma nova tarefa com base nos dados fornecidos.")]
+    [ProducesResponseType<WorkTask>(StatusCodes.Status201Created)]
+    public IActionResult CreateTask([FromBody, Description("Objeto contendo os detalhes da nova tarefa.")] NewTaskRequestDTO newTask)
+    {
+        var newWorkTask = new WorkTask
+        {
+            Id = nextId++,
+            Title = newTask.Title,
+            Date = newTask.Date,
+            DurationInMinutes = newTask.DurationInMinutes,
+            IsCompleted = false
+        };
+
+        Tasks.Add(newWorkTask);
+
+        return CreatedAtAction(nameof(GetTask), new { id = newWorkTask.Id }, newWorkTask);
     }
 }
 
