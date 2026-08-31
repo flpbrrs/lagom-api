@@ -1,5 +1,5 @@
 ﻿using Lagom.API.Domain.Models;
-using Lagom.Application.UseCases.Tasks;
+using Lagom.Application.Tasks;
 using Lagom.Communication.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -26,19 +26,7 @@ public class TasksController : ControllerBase
         [FromQuery, Description("Data inicial do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? startDate,
         [FromQuery, Description("Data final do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? endDate,
         [FromServices] ListAllTasksUseCase listAllTasksUseCase
-    )
-    {
-        var tasks = listAllTasksUseCase.Execute(startDate, endDate);
-
-        return Ok(tasks.Select(task => new TaskResponse
-        {
-            Id = task.Id,
-            Title = task.Title,
-            Date = task.Date.ToString("dd/MM/yyyy"),
-            Duration = TimeSpan.FromMinutes(task.DurationInMinutes).ToString(@"hh\hmm"),
-            IsCompleted = task.IsCompleted
-        }));
-    }
+    ) => Ok(listAllTasksUseCase.Execute(startDate, endDate));
 
     [HttpGet("{id}")]
     [EndpointSummary("Obtém uma tarefa específica pelo ID")]

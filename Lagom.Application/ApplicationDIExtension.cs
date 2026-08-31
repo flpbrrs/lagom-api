@@ -1,4 +1,4 @@
-﻿using Lagom.Application.UseCases.Tasks;
+﻿using Lagom.Application.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lagom.Application;
