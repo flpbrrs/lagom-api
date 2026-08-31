@@ -1,4 +1,5 @@
 ﻿using Lagom.API.Domain.Models;
+using Lagom.Application.UseCases.Tasks;
 using Lagom.Communication.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -21,11 +22,14 @@ public class TasksController : ControllerBase
     [EndpointSummary("Lista todas as tarefas ou filtra por intervalo de datas")]
     [EndpointDescription("Retorna uma lista de atividades. Opcionalmente, você pode filtrar as tarefas fornecendo uma data de início e uma data de término.")]
     [ProducesResponseType<List<TaskResponse>>(StatusCodes.Status200OK)]
-    public IActionResult GetTasks(
+    public IActionResult ListAllTasks(
         [FromQuery, Description("Data inicial do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? startDate,
         [FromQuery, Description("Data final do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? endDate
     )
     {
+        // TODO: Implementar a lógica de filtragem de tarefas com base nas datas fornecidas.
+        new ListAllTasksUseCase().Execute(startDate, endDate);
+
         if (startDate.HasValue && endDate.HasValue)
         {
             return Ok(Tasks.Where(t => t.Date >= startDate.Value && t.Date <= endDate.Value));
