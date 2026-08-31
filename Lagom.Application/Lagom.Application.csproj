@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lagom.Communication\Lagom.Communication.csproj" />
+    <ProjectReference Include="..\Lagom.Domain\Lagom.Domain.csproj" />
+    <ProjectReference Include="..\Lagom.Exception\Lagom.Exception.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Lagom.Application\Lagom.Application.csproj" />
     <ProjectReference Include="..\Lagom.Communication\Lagom.Communication.csproj" />
+    <ProjectReference Include="..\Lagom.Exception\Lagom.Exception.csproj" />
   </ItemGroup>
 
 </Project>
