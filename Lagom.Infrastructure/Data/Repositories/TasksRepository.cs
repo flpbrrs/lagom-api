@@ -5,8 +5,12 @@ namespace Lagom.Infrastructure.Data.Repositories;
 
 internal class TasksRepository : ITaskRepository
 {
-    private int _nextId = 1;
-    private readonly List<Task> _tasks = [];
+    private int _nextId = 4;
+    private readonly List<Task> _tasks = [
+            new() { Id = 1, Title = "Task 1 DI", DurationInMinutes = 60, IsCompleted = false },
+            new() { Id = 2, Title = "Task 2 DI", Date = new DateOnly(2026, 8, 20), DurationInMinutes = 120, IsCompleted = true },
+            new() { Id = 3, Title = "Task 3 DI", Date = new DateOnly(2026, 8, 25), DurationInMinutes = 30, IsCompleted = false }
+        ];
 
     public Task? GetById(int id)
     {
@@ -26,7 +30,7 @@ internal class TasksRepository : ITaskRepository
         {
             return _tasks.Where(t => t.Date >= startDate && t.Date <= endDate);
         }
-        
+
         return _tasks;
     }
 
