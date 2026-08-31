@@ -5,6 +5,7 @@
     <Project Path="Lagom.Communication/Lagom.Communication.csproj" Id="2a602353-fdec-4ead-9d82-d58881b4f895" />
     <Project Path="Lagom.Domain/Lagom.Domain.csproj" Id="989967ad-2792-4bc8-a540-ebb524facc4a" />
     <Project Path="Lagom.Exception/Lagom.Exception.csproj" Id="84fc054d-7a9d-4940-8dce-61df5ad16f6c" />
+    <Project Path="Lagom.Infrastructure/Lagom.Infrastructure.csproj" Id="76e3e552-e29c-4a24-a8b3-aa206b7e201c" />
   </Folder>
   <Folder Name="/tests/" />
 </Solution>
