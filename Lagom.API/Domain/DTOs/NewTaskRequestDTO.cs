@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Lagom.Domain.DTOs;
+namespace Lagom.API.Domain.DTOs;
 
 public class NewTaskRequestDTO
 {

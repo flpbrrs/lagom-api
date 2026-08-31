@@ -1,9 +1,9 @@
-﻿using Lagom.Domain.DTOs;
-using Lagom.Domain.Models;
+﻿using Lagom.API.Domain.DTOs;
+using Lagom.API.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
-namespace Lagom.Controllers;
+namespace Lagom.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

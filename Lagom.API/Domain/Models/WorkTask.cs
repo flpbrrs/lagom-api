@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Lagom.Domain.Models;
+namespace Lagom.API.Domain.Models;
 
 [Description("Representa uma tarefa a ser executada.")]
 public class WorkTask
