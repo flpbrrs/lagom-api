@@ -1,3 +1,4 @@
+using Lagom.Infrastructure;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddRouting(options => {
     options.LowercaseUrls = true;
     options.LowercaseQueryStrings = true;
 });
+
+builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
