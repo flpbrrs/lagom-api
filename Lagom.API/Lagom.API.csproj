@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Lagom.Application.csproj" />
+    <ProjectReference Include="..\Lagom.Application\Lagom.Application.csproj" />
     <ProjectReference Include="..\Lagom.Communication\Lagom.Communication.csproj" />
   </ItemGroup>
 
