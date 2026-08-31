@@ -24,18 +24,13 @@ public class TasksController : ControllerBase
     [ProducesResponseType<List<TaskResponse>>(StatusCodes.Status200OK)]
     public IActionResult ListAllTasks(
         [FromQuery, Description("Data inicial do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? startDate,
-        [FromQuery, Description("Data final do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? endDate
+        [FromQuery, Description("Data final do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? endDate,
+        [FromServices] ListAllTasksUseCase listAllTasksUseCase
     )
     {
-        // TODO: Implementar a lógica de filtragem de tarefas com base nas datas fornecidas.
-        new ListAllTasksUseCase().Execute(startDate, endDate);
+        var tasks = listAllTasksUseCase.Execute(startDate, endDate);
 
-        if (startDate.HasValue && endDate.HasValue)
-        {
-            return Ok(Tasks.Where(t => t.Date >= startDate.Value && t.Date <= endDate.Value));
-        }
-
-        return Ok(Tasks.Select(task => new TaskResponse
+        return Ok(tasks.Select(task => new TaskResponse
         {
             Id = task.Id,
             Title = task.Title,

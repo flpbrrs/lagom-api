@@ -1,3 +1,4 @@
+using Lagom.Application;
 using Lagom.Infrastructure;
 using Scalar.AspNetCore;
 
@@ -12,6 +13,7 @@ builder.Services.AddRouting(options => {
 });
 
 builder.Services.AddInfrastructure();
+builder.Services.AddApplication();
 
 var app = builder.Build();
 

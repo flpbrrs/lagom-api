@@ -1,9 +1,14 @@
-﻿namespace Lagom.Application.UseCases.Tasks;
+﻿using Lagom.Domain.Tasks;
+using Task = Lagom.Domain.Tasks.Task;
 
-public class ListAllTasksUseCase
+namespace Lagom.Application.UseCases.Tasks;
+
+public class ListAllTasksUseCase(ITaskRepository taskRepository)
 {
-    public void Execute(DateOnly? startDate, DateOnly? endDate)
+    private readonly ITaskRepository _taskRepository = taskRepository;
+
+    public IEnumerable<Task> Execute(DateOnly? startDate, DateOnly? endDate)
     {
-        // Implement the logic to list all tasks here
+        return _taskRepository.ListAll(startDate, endDate);
     }
 }
