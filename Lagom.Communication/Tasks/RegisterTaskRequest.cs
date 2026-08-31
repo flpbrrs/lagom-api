@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Lagom.Communication.Task;
+namespace Lagom.Communication.Tasks;
 
 public class RegisterTaskRequest
 {
