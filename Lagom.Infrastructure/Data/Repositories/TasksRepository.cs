@@ -26,12 +26,15 @@ internal class TasksRepository : ITaskRepository
 
     public IEnumerable<Task> ListAll(DateOnly? startDate, DateOnly? endDate)
     {
-        if (startDate != null && endDate != null)
-        {
-            return _tasks.Where(t => t.Date >= startDate && t.Date <= endDate);
-        }
+        var filtered = _tasks.AsEnumerable();
 
-        return _tasks;
+        if (startDate.HasValue)
+            filtered = filtered.Where(t => t.Date >= startDate.Value);
+
+        if (endDate.HasValue)
+            filtered = filtered.Where(t => t.Date <= endDate.Value);
+
+        return filtered;
     }
 
     public Task RegisterTask(Task task)
