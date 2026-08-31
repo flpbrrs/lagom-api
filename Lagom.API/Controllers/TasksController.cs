@@ -1,5 +1,5 @@
-﻿using Lagom.API.Domain.DTOs;
-using Lagom.API.Domain.Models;
+﻿using Lagom.API.Domain.Models;
+using Lagom.Communication.Task;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
@@ -20,7 +20,7 @@ public class TasksController : ControllerBase
     [HttpGet]
     [EndpointSummary("Lista todas as tarefas ou filtra por intervalo de datas")]
     [EndpointDescription(" Retorna uma lista de atividades. Opcionalmente, você pode filtrar as tarefas fornecendo uma data de início e uma data de término.")]
-    [ProducesResponseType<List<WorkTask>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<List<TaskResponse>>(StatusCodes.Status200OK)]
     public IActionResult GetTasks(
         [FromQuery, Description("Data inicial do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? startDate,
         [FromQuery, Description("Data final do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? endDate
@@ -31,15 +31,22 @@ public class TasksController : ControllerBase
             return Ok(Tasks.Where(t => t.Date >= startDate.Value && t.Date <= endDate.Value));
         }
 
-        return Ok(Tasks);
+        return Ok(Tasks.Select(task => new TaskResponse
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Date = task.Date.ToString("dd/MM/yyyy"),
+            Duration = TimeSpan.FromMinutes(task.DurationInMinutes).ToString(@"hh\hmm"),
+            IsCompleted = task.IsCompleted
+        }));
     }
 
     [HttpGet("{id}")]
     [EndpointSummary("Obtém uma tarefa específica pelo ID")]
     [EndpointDescription("Retorna uma tarefa específica com base no ID fornecido.")]
-    [ProducesResponseType<WorkTask>(StatusCodes.Status200OK)]
+    [ProducesResponseType<TaskResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetTask([FromRoute, Description("Identificador único da tarefa.")] double id)
+    public IActionResult GetTask([FromRoute, Description("Identificador único da tarefa.")] int id)
     {
         var task = Tasks.FirstOrDefault(t => t.Id == id);
         if (task == null)
@@ -47,14 +54,24 @@ public class TasksController : ControllerBase
             return NotFound();
         }
 
-        return Ok(task);
+        // TODO: Mover essa lógica de mapeamento para um serviço ou método separado para manter o controller limpo.
+        var response = new TaskResponse
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Date = task.Date.ToString("dd/MM/yyyy"),
+            Duration = TimeSpan.FromMinutes(task.DurationInMinutes).ToString(@"hh\hmm"),
+            IsCompleted = task.IsCompleted
+        };
+
+        return Ok(response);
     }
 
     [HttpPost]
     [EndpointSummary("Cria uma nova tarefa")]
     [EndpointDescription("Cria uma nova tarefa com base nos dados fornecidos.")]
-    [ProducesResponseType<WorkTask>(StatusCodes.Status201Created)]
-    public IActionResult CreateTask([FromBody, Description("Objeto contendo os detalhes da nova tarefa.")] NewTaskRequestDTO newTask)
+    [ProducesResponseType<TaskResponse>(StatusCodes.Status201Created)]
+    public IActionResult CreateTask([FromBody, Description("Objeto contendo os detalhes da nova tarefa.")] RegisterTaskRequest newTask)
     {
         var newWorkTask = new WorkTask
         {
@@ -67,7 +84,16 @@ public class TasksController : ControllerBase
 
         Tasks.Add(newWorkTask);
 
-        return CreatedAtAction(nameof(GetTask), new { id = newWorkTask.Id }, newWorkTask);
+        var response = new TaskResponse
+        {
+            Id = newWorkTask.Id,
+            Title = newWorkTask.Title,
+            Date = newWorkTask.Date.ToString("dd/MM/yyyy"),
+            Duration = TimeSpan.FromMinutes(newWorkTask.DurationInMinutes).ToString(@"hh\hmm"),
+            IsCompleted = newWorkTask.IsCompleted
+        };
+
+        return CreatedAtAction(nameof(GetTask), new { id = response.Id }, response);
     }
 }
 

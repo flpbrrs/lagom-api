@@ -11,4 +11,9 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.17.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Lagom.Application.csproj" />
+    <ProjectReference Include="..\Lagom.Communication\Lagom.Communication.csproj" />
+  </ItemGroup>
+
 </Project>

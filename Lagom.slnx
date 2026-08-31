@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="Application/Lagom.Application.csproj" Id="a26fd1db-2a1e-449c-9977-1a39dbfee26c" />
   <Project Path="Lagom.API/Lagom.API.csproj" />
+  <Project Path="Lagom.Communication/Lagom.Communication.csproj" Id="2a602353-fdec-4ead-9d82-d58881b4f895" />
 </Solution>
