@@ -1,5 +1,5 @@
 ﻿using Lagom.API.Domain.Models;
-using Lagom.Application.Tasks;
+using Lagom.Application.Tasks.UseCase;
 using Lagom.Communication.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -58,29 +58,9 @@ public class TasksController : ControllerBase
     [EndpointSummary("Cria uma nova tarefa")]
     [EndpointDescription("Cria uma nova tarefa com base nos dados fornecidos.")]
     [ProducesResponseType<TaskResponse>(StatusCodes.Status201Created)]
-    public IActionResult CreateTask([FromBody, Description("Objeto contendo os detalhes da nova tarefa.")] RegisterTaskRequest newTask)
-    {
-        var newWorkTask = new WorkTask
-        {
-            Id = nextId++,
-            Title = newTask.Title,
-            Date = newTask.Date,
-            DurationInMinutes = newTask.DurationInMinutes,
-            IsCompleted = false
-        };
-
-        Tasks.Add(newWorkTask);
-
-        var response = new TaskResponse
-        {
-            Id = newWorkTask.Id,
-            Title = newWorkTask.Title,
-            Date = newWorkTask.Date.ToString("dd/MM/yyyy"),
-            Duration = TimeSpan.FromMinutes(newWorkTask.DurationInMinutes).ToString(@"hh\hmm"),
-            IsCompleted = newWorkTask.IsCompleted
-        };
-
-        return CreatedAtAction(nameof(GetTask), new { id = response.Id }, response);
-    }
+    public IActionResult CreateTask(
+        [FromBody, Description("Objeto contendo os detalhes da nova tarefa.")] RegisterTaskRequest newTask,
+        [FromServices] RegisterNewTaskUseCase registerNewTaskUseCase
+    ) => Created(string.Empty, registerNewTaskUseCase.Execute(newTask));
 }
 

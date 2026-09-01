@@ -2,7 +2,7 @@
 using Lagom.Domain.Tasks;
 using Task = Lagom.Domain.Tasks.Task;
 
-namespace Lagom.Application.Tasks;
+namespace Lagom.Application.Tasks.UseCase;
 
 public class ListAllTasksUseCase(ITaskRepository taskRepository)
 {

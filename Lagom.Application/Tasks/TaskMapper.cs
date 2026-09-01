@@ -16,4 +16,15 @@ public static class TaskMapper
             IsCompleted = task.IsCompleted
         };
     }
+
+    public static Task ToDomainTask(this RegisterTaskRequest request)
+    {
+        return new Task
+        {
+            Title = request.Title,
+            Date = request.Date,
+            DurationInMinutes = request.DurationInMinutes,
+            IsCompleted = false
+        };
+    }
 }
