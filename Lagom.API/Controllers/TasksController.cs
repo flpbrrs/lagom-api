@@ -33,25 +33,18 @@ public class TasksController : ControllerBase
     [EndpointDescription("Retorna uma tarefa específica com base no ID fornecido.")]
     [ProducesResponseType<TaskResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetTask([FromRoute, Description("Identificador único da tarefa.")] int id)
+    public IActionResult GetTask(
+        [FromRoute, Description("Identificador único da tarefa.")] int id,
+        [FromServices] FindTaskByIdUseCase findTaskByIdUseCase
+    )
     {
-        var task = Tasks.FirstOrDefault(t => t.Id == id);
+        var task = findTaskByIdUseCase.Execute(id);
         if (task == null)
         {
             return NotFound();
         }
 
-        // TODO: Mover essa lógica de mapeamento para um serviço ou método separado para manter o controller limpo.
-        var response = new TaskResponse
-        {
-            Id = task.Id,
-            Title = task.Title,
-            Date = task.Date.ToString("dd/MM/yyyy"),
-            Duration = TimeSpan.FromMinutes(task.DurationInMinutes).ToString(@"hh\hmm"),
-            IsCompleted = task.IsCompleted
-        };
-
-        return Ok(response);
+        return Ok(task);
     }
 
     [HttpPost]

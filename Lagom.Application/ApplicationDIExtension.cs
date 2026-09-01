@@ -9,5 +9,6 @@ public static class ApplicationDIExtension
     {
         services.AddScoped<ListAllTasksUseCase>();
         services.AddScoped<RegisterNewTaskUseCase>();
+        services.AddScoped<FindTaskByIdUseCase>();
     }
 }
