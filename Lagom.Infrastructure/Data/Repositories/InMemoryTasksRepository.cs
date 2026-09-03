@@ -3,7 +3,7 @@ using Task = Lagom.Domain.Tasks.Task;
 
 namespace Lagom.Infrastructure.Data.Repositories;
 
-internal class TasksRepository : ITaskRepository
+internal class InMemoryTasksRepository : ITaskRepository
 {
     private int _nextId = 4;
     private readonly List<Task> _tasks = [

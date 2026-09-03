@@ -47,4 +47,3 @@ public class TasksController : ControllerBase
         [FromServices] RegisterNewTaskUseCase registerNewTaskUseCase
     ) => Created(string.Empty, registerNewTaskUseCase.Execute(newTask));
 }
-
