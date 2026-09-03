@@ -11,3 +11,6 @@ obj/
 
 ## VS Code
 .vscode/
+
+## Docker
+.env
