@@ -1,5 +1,5 @@
-﻿using Lagom.Application.Shared;
-using Lagom.Domain.Tasks;
+using Lagom.Application.Shared;
+using Lagom.Domain.WorkItems;
 using Lagom.Infrastructure.Data;
 using Lagom.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ public static class InfrastructureDIExtension
 
         services.AddDbContext<LagomDbContext>(options => options.UseSqlServer(connectionString));
 
-        services.AddScoped<ITaskRepository, EFTaskRepository>();
+        services.AddScoped<IWorkItemRepository, EFWorkItemRepository>();
         services.AddScoped<IUnitOfWork, EFUnitOfWork>();
     }
 }

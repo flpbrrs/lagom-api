@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace Lagom.Communication.Tasks;
+namespace Lagom.Communication.WorkItems;
 
-public class RegisterTaskRequest
+public class RegisterWorkItemRequest
 {
     [Description("Título da tarefa.")]
     public string Title { get; set; } = string.Empty;

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace Lagom.Communication.Tasks;
+namespace Lagom.Communication.WorkItems;
 
-public class TaskResponse
+public class WorkItemResponse
 {
     [Description("Identificador único da tarefa.")]
     public int Id { get; set; }

@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Task = Lagom.Domain.Tasks.Task;
+﻿using Lagom.Domain.WorkItems;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lagom.Infrastructure.Data;
 
 internal class LagomDbContext(DbContextOptions<LagomDbContext> options) : DbContext(options)
 {
-    public DbSet<Task> Tasks { get; set; } = null!;
+    public DbSet<WorkItem> WorkItems { get; set; } = null!;
 }

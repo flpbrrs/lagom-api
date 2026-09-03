@@ -1,6 +1,6 @@
-﻿namespace Lagom.Domain.Tasks;
+﻿namespace Lagom.Domain.WorkItems;
 
-public class Task
+public class WorkItem
 {
     public int Id { get; set; }
 
