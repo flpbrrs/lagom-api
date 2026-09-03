@@ -20,7 +20,6 @@ internal class EFTaskRepository(LagomDbContext context) : ITaskRepository
     public Task RegisterTask(Task task)
     {
         _context.Tasks.Add(task);
-        _context.SaveChanges();
         
         return task;
     }
