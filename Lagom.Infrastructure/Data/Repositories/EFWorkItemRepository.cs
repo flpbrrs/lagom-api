@@ -1,4 +1,5 @@
-﻿using Lagom.Domain.WorkItems;
+﻿using Microsoft.EntityFrameworkCore;
+using Lagom.Domain.WorkItems;
 
 namespace Lagom.Infrastructure.Data.Repositories;
 
@@ -20,6 +21,12 @@ internal class EFWorkItemRepository(LagomDbContext context) : IWorkItemRepositor
 
     public async Task<IEnumerable<WorkItem>> ListAllAsync(DateOnly? startDate, DateOnly? endDate)
     {
-        throw new NotImplementedException();
+        var result = await _context.WorkItems
+            .Where(w => (!startDate.HasValue || w.Date >= startDate.Value)
+                     && (!endDate.HasValue || w.Date <= endDate.Value))
+            .AsNoTracking()
+            .ToListAsync();
+
+        return result;
     }
 }

@@ -27,4 +27,12 @@ public static class WorkItemMapper
             IsCompleted = false
         };
     }
+
+    public static WorkItemsResponse ToWorkItemsResponse(this IEnumerable<WorkItem> workItems)
+    {
+        return new WorkItemsResponse
+        {
+            WorkItems = workItems.Select(workItem => workItem.ToWorkItemResponse())
+        };
+    }
 }
