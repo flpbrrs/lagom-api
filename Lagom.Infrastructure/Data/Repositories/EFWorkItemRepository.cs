@@ -16,7 +16,9 @@ internal class EFWorkItemRepository(LagomDbContext context) : IWorkItemRepositor
 
     public async Task<WorkItem?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.WorkItems
+            .AsNoTracking()
+            .FirstOrDefaultAsync(w => w.Id == id);
     }
 
     public async Task<IEnumerable<WorkItem>> ListAllAsync(DateOnly? startDate, DateOnly? endDate)
