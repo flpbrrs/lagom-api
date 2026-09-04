@@ -9,12 +9,12 @@ public class RegisterNewWorkItemUseCase(IWorkItemRepository workItemRepository, 
     private readonly IWorkItemRepository _workItemRepository = workItemRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public WorkItemResponse Execute(RegisterWorkItemRequest workItem)
+    public async Task<WorkItemResponse> ExecuteAsync(RegisterWorkItemRequest workItem)
     {
         // TODO: Add data validation
-        var newWorkItem = _workItemRepository.RegisterWorkItem(workItem.ToDomainWorkItem());
+        var newWorkItem = await _workItemRepository.RegisterAsync(workItem.ToDomainWorkItem());
 
-        _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync();
 
         return newWorkItem.ToWorkItemResponse();
     }

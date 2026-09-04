@@ -6,5 +6,8 @@ internal class EFUnitOfWork(LagomDbContext context) : IUnitOfWork
 {
     private readonly LagomDbContext _context = context;
 
-    public void Commit() => _context.SaveChanges();
+    public async Task CommitAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 }

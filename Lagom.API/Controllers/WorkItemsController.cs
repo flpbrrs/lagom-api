@@ -13,23 +13,23 @@ public class WorkItemsController : ControllerBase
     [EndpointSummary("Lista todas as tarefas ou filtra por intervalo de datas")]
     [EndpointDescription("Retorna uma lista de atividades. Opcionalmente, você pode filtrar as tarefas fornecendo uma data de início e uma data de término.")]
     [ProducesResponseType<List<WorkItemResponse>>(StatusCodes.Status200OK)]
-    public IActionResult ListAllWorkItems(
+    public async Task<IActionResult> ListAllWorkItemsAsync(
         [FromQuery, Description("Data inicial do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? startDate,
         [FromQuery, Description("Data final do filtro (inclusive). Formato: yyyy-MM-dd.")] DateOnly? endDate,
         [FromServices] ListAllWorkItemsUseCase listAllWorkItemsUseCase
-    ) => Ok(listAllWorkItemsUseCase.Execute(startDate, endDate));
+    ) => Ok(await listAllWorkItemsUseCase.ExecuteAsync(startDate, endDate));
 
     [HttpGet("{id}")]
     [EndpointSummary("Obtém uma tarefa específica pelo ID")]
     [EndpointDescription("Retorna uma tarefa específica com base no ID fornecido.")]
     [ProducesResponseType<WorkItemResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetWorkItem(
+    public async Task<IActionResult> GetWorkItemAsync(
         [FromRoute, Description("Identificador único da tarefa.")] int id,
         [FromServices] FindWorkItemByIdUseCase findWorkItemByIdUseCase
     )
     {
-        var workItem = findWorkItemByIdUseCase.Execute(id);
+        var workItem = await findWorkItemByIdUseCase.ExecuteAsync(id);
         if (workItem == null)
         {
             return NotFound();
@@ -42,8 +42,8 @@ public class WorkItemsController : ControllerBase
     [EndpointSummary("Cria uma nova tarefa")]
     [EndpointDescription("Cria uma nova tarefa com base nos dados fornecidos.")]
     [ProducesResponseType<WorkItemResponse>(StatusCodes.Status201Created)]
-    public IActionResult CreateWorkItem(
+    public async Task<IActionResult> CreateWorkItemAsync(
         [FromBody, Description("Objeto contendo os detalhes da nova tarefa.")] RegisterWorkItemRequest newWorkItem,
         [FromServices] RegisterNewWorkItemUseCase registerNewWorkItemUseCase
-    ) => Created(string.Empty, registerNewWorkItemUseCase.Execute(newWorkItem));
+    ) => Created(string.Empty, await registerNewWorkItemUseCase.ExecuteAsync(newWorkItem));
 }

@@ -11,19 +11,7 @@ internal class InMemoryWorkItemRepository : IWorkItemRepository
             new() { Id = 3, Title = "Task 3 DI", Date = new DateOnly(2026, 8, 25), DurationInMinutes = 30, IsCompleted = false }
         ];
 
-    public WorkItem? GetById(int id)
-    {
-        var workItem = _workItems.FirstOrDefault(w => w.Id == id);
-
-        if(workItem == null)
-        {
-            return null;
-        }
-
-        return workItem;
-    }
-
-    public IEnumerable<WorkItem> ListAll(DateOnly? startDate, DateOnly? endDate)
+    public async Task<IEnumerable<WorkItem>> ListAllAsync(DateOnly? startDate, DateOnly? endDate)
     {
         var filtered = _workItems.AsEnumerable();
 
@@ -33,14 +21,26 @@ internal class InMemoryWorkItemRepository : IWorkItemRepository
         if (endDate.HasValue)
             filtered = filtered.Where(w => w.Date <= endDate.Value);
 
-        return filtered;
+        return await Task.FromResult(filtered);
     }
 
-    public WorkItem RegisterWorkItem(WorkItem workItem)
+    public async Task<WorkItem?> GetByIdAsync(int id)
+    {
+        var workItem = _workItems.FirstOrDefault(w => w.Id == id);
+
+        if (workItem == null)
+        {
+            return null;
+        }
+
+        return await Task.FromResult(workItem);
+    }
+
+    public async Task<WorkItem> RegisterAsync(WorkItem workItem)
     {
         workItem.Id = Interlocked.Increment(ref _nextId);
         _workItems.Add(workItem);
 
-        return workItem;
+        return await Task.FromResult(workItem);
     }
 }

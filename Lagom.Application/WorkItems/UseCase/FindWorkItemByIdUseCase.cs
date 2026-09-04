@@ -7,9 +7,9 @@ public class FindWorkItemByIdUseCase(IWorkItemRepository workItemRepository)
 {
     private readonly IWorkItemRepository _workItemRepository = workItemRepository;
 
-    public WorkItemResponse? Execute(int workItemId)
+    public async Task<WorkItemResponse?> ExecuteAsync(int workItemId)
     {
-        var workItem = _workItemRepository.GetById(workItemId);
+        var workItem = await _workItemRepository.GetByIdAsync(workItemId);
 
         if(workItem == null)
         {

@@ -6,20 +6,20 @@ internal class EFWorkItemRepository(LagomDbContext context) : IWorkItemRepositor
 {
     private readonly LagomDbContext _context = context;
 
-    public WorkItem? GetById(int id)
+    public async Task<WorkItem> RegisterAsync(WorkItem workItem)
+    {
+        await _context.WorkItems.AddAsync(workItem);
+
+        return workItem;
+    }
+
+    public async Task<WorkItem?> GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<WorkItem> ListAll(DateOnly? startDate, DateOnly? endDate)
+    public async Task<IEnumerable<WorkItem>> ListAllAsync(DateOnly? startDate, DateOnly? endDate)
     {
         throw new NotImplementedException();
-    }
-
-    public WorkItem RegisterWorkItem(WorkItem workItem)
-    {
-        var newWorkItem = _context.WorkItems.Add(workItem);
-
-        return newWorkItem.Entity;
     }
 }

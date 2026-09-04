@@ -2,7 +2,7 @@
 
 public interface IWorkItemRepository
 {
-    public IEnumerable<WorkItem> ListAll(DateOnly? startDate, DateOnly? endDate);
-    public WorkItem? GetById(int id);
-    public WorkItem RegisterWorkItem(WorkItem workItem);
+    public Task<IEnumerable<WorkItem>> ListAllAsync(DateOnly? startDate, DateOnly? endDate);
+    public Task<WorkItem?> GetByIdAsync(int id);
+    public Task<WorkItem> RegisterAsync(WorkItem workItem);
 }

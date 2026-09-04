@@ -7,8 +7,9 @@ public class ListAllWorkItemsUseCase(IWorkItemRepository workItemRepository)
 {
     private readonly IWorkItemRepository _workItemRepository = workItemRepository;
 
-    public IEnumerable<WorkItemResponse> Execute(DateOnly? startDate, DateOnly? endDate)
+    public async Task<IEnumerable<WorkItemResponse>> ExecuteAsync(DateOnly? startDate, DateOnly? endDate)
     {
-        return _workItemRepository.ListAll(startDate, endDate).Select(workItem => workItem.ToWorkItemResponse());
+        var workItems = await _workItemRepository.ListAllAsync(startDate, endDate);
+        return workItems.Select(workItem => workItem.ToWorkItemResponse());
     }
 }
