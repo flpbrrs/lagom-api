@@ -8,9 +8,12 @@ public class LagomExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, System.Exception exception, CancellationToken cancellationToken)
     {
-        var (statusCode, response) = exception is LagomException lagomException
-            ? (lagomException.StatusCode, new ResponseErrors(lagomException.Errors))
-            : (StatusCodes.Status500InternalServerError, new ResponseErrors("Erro desconhecido"));
+        var (statusCode, response) = exception switch
+        {
+            LagomValidationException lagomValidationException => (lagomValidationException.StatusCode, new ResponseErrors("Ocorreu um erro de validação", lagomValidationException.Errors)),
+            LagomDomainException lagomDomainException => (lagomDomainException.StatusCode, new ResponseErrors(lagomDomainException.ErrorMessage)),
+            _ => (StatusCodes.Status500InternalServerError, new ResponseErrors("Erro desconhecido"))
+        };
 
         httpContext.Response.StatusCode = statusCode;
 

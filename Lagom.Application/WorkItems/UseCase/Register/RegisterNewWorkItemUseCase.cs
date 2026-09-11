@@ -27,6 +27,13 @@ public class RegisterNewWorkItemUseCase(IWorkItemRepository workItemRepository, 
 
         if (validationResult.IsValid) return;
 
-        throw new ErrorOnValidationException([.. validationResult.Errors.Select(error => error.ErrorMessage)]);
+        throw new ErrorOnValidationException
+            (
+                validationResult.Errors.GroupBy(x => x.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(x => x.ErrorMessage)
+                    )
+            );
     }
 }

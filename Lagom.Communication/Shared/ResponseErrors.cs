@@ -1,8 +1,22 @@
-﻿namespace Lagom.Communication.Shared;
+﻿using System.Text.Json.Serialization;
 
-public class ResponseErrors(IEnumerable<string> errors)
+namespace Lagom.Communication.Shared;
+
+public class ResponseErrors
 {
-    public IEnumerable<string> Errors { get; } = errors;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ErrorMessage { get; }
 
-    public ResponseErrors(string error) : this([error]) { }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyDictionary<string, IEnumerable<string>>? ErrorDetails { get; }
+
+    public ResponseErrors(string errorMessage) => ErrorMessage = errorMessage;
+
+    public ResponseErrors(IReadOnlyDictionary<string, IEnumerable<string>> errorDetails) => ErrorDetails = errorDetails;
+
+    public ResponseErrors(string errorMessage, IReadOnlyDictionary<string, IEnumerable<string>> errorDetails)
+    {
+        ErrorMessage = errorMessage;
+        ErrorDetails = errorDetails;
+    }
 }
