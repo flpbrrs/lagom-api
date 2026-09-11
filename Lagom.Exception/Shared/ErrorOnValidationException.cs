@@ -2,7 +2,7 @@
 
 namespace Lagom.Exception.Shared;
 
-public class ErrorOnValidationException(IReadOnlyDictionary<string, List<string>> errors) : LagomException
+public class ErrorOnValidationException(IEnumerable<string> errors) : LagomException(statusCode: 400)
 {
-    public IReadOnlyDictionary<string, List<string>> Errors { get; } = errors;
+    public IEnumerable<string> Errors { get; } = errors;
 }

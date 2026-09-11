@@ -1,8 +1,8 @@
 ﻿namespace Lagom.Communication.Shared;
 
-public class ResponseErrors(IReadOnlyDictionary<string, List<string>> errors)
+public class ResponseErrors(IEnumerable<string> errors)
 {
-    public IReadOnlyDictionary<string, List<string>> Errors { get; } = errors;
+    public IEnumerable<string> Errors { get; } = errors;
 
-    public ResponseErrors(string error) : this(new Dictionary<string, List<string>> { [string.Empty] = [error] }) { }
+    public ResponseErrors(string error) : this([error]) { }
 }
