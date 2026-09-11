@@ -1,3 +1,4 @@
+using Lagom.API.Filters;
 using Lagom.Application;
 using Lagom.Infrastructure;
 using Scalar.AspNetCore;
@@ -12,10 +13,15 @@ builder.Services.AddRouting(options => {
     options.LowercaseQueryStrings = true;
 });
 
+builder.Services.AddExceptionHandler<LagomExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {

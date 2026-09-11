@@ -2,7 +2,4 @@
 
 namespace Lagom.Exception.Shared;
 
-public class ErrorOnValidationException(IEnumerable<string> errors) : LagomException(statusCode: 400)
-{
-    public IEnumerable<string> Errors { get; } = errors;
-}
+public class ErrorOnValidationException(List<string> errors) : LagomException(statusCode: 400, errors) { }

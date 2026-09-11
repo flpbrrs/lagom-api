@@ -49,23 +49,5 @@ public class WorkItemsController : ControllerBase
     public async Task<IActionResult> CreateWorkItemAsync(
         [FromBody, Description("Objeto contendo os detalhes da nova tarefa.")] RegisterWorkItemRequest newWorkItem,
         [FromServices] RegisterNewWorkItemUseCase registerNewWorkItemUseCase
-    )
-    {
-        try
-        {
-            return Created(string.Empty, await registerNewWorkItemUseCase.ExecuteAsync(newWorkItem));
-        }
-        catch (ErrorOnValidationException ex)
-        {
-            return BadRequest(
-                new ResponseErrors(ex.Errors)
-            );
-        }
-        catch
-        {
-            var errors = new ResponseErrors("Erro desconhecido");
-
-            return StatusCode(StatusCodes.Status500InternalServerError, errors);
-        }
-    }
+    ) => Created(string.Empty, await registerNewWorkItemUseCase.ExecuteAsync(newWorkItem));
 }
