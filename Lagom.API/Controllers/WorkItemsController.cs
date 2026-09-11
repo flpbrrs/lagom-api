@@ -1,5 +1,8 @@
 ﻿using Lagom.Application.WorkItems.UseCase;
+using Lagom.Application.WorkItems.UseCase.Register;
+using Lagom.Communication.Shared;
 using Lagom.Communication.WorkItems;
+using Lagom.Exception.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
@@ -42,8 +45,27 @@ public class WorkItemsController : ControllerBase
     [EndpointSummary("Cria uma nova tarefa")]
     [EndpointDescription("Cria uma nova tarefa com base nos dados fornecidos.")]
     [ProducesResponseType<WorkItemResponse>(StatusCodes.Status201Created)]
+    [ProducesResponseType<ResponseErrors>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateWorkItemAsync(
         [FromBody, Description("Objeto contendo os detalhes da nova tarefa.")] RegisterWorkItemRequest newWorkItem,
         [FromServices] RegisterNewWorkItemUseCase registerNewWorkItemUseCase
-    ) => Created(string.Empty, await registerNewWorkItemUseCase.ExecuteAsync(newWorkItem));
+    )
+    {
+        try
+        {
+            return Created(string.Empty, await registerNewWorkItemUseCase.ExecuteAsync(newWorkItem));
+        }
+        catch (ErrorOnValidationException ex)
+        {
+            return BadRequest(
+                new ResponseErrors(ex.Errors)
+            );
+        }
+        catch
+        {
+            var errors = new ResponseErrors("Erro desconhecido");
+
+            return StatusCode(StatusCodes.Status500InternalServerError, errors);
+        }
+    }
 }

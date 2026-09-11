@@ -1,4 +1,5 @@
 using Lagom.Application.WorkItems.UseCase;
+using Lagom.Application.WorkItems.UseCase.Register;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lagom.Application;

@@ -1,7 +1,8 @@
 ﻿namespace Lagom.Communication.Shared;
 
-// TODO: Implementar o tratamento de erros que preenche e retorna esse objeto na API.
-public class ResponseErrors
+public class ResponseErrors(IReadOnlyDictionary<string, List<string>> errors)
 {
-    public List<string> Errors { get; set; } = [];
+    public IReadOnlyDictionary<string, List<string>> Errors { get; } = errors;
+
+    public ResponseErrors(string error) : this(new Dictionary<string, List<string>> { [string.Empty] = [error] }) { }
 }
